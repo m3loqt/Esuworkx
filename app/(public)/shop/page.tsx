@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { formatPrice, statusLabel, statusColor } from "@/lib/product";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Shop",
+  description:
+    "Shop limited-edition and made-to-order art toy sculptures from Esuworx, the independent art toy practice of Ace De Leon.",
+};
 
 export default async function ShopPage() {
   const shopProducts = await db.select().from(products);

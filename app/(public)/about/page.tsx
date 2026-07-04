@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Esuworx is an independent art toy practice by Ace De Leon, a Philippine-based artist exploring childhood memories, companionship, and everyday moments through hand-finished sculpture.",
+};
+
 export default function AboutPage() {
   return (
     <div className="tab">

@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+  description:
+    "Answers to common questions about Esuworx releases, production timelines, worldwide shipping, damaged pieces, and our returns policy.",
+};
+
 const faqs = [
   {
     q: "How do releases work?",

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import ShopGallery from "@/components/ShopGallery";
@@ -7,6 +8,23 @@ import { products } from "@/db/schema";
 import { formatPrice, statusLabel, statusColor } from "@/lib/product";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const [product] = await db.select().from(products).where(eq(products.slug, slug));
+
+  if (!product) return { title: "Product Not Found" };
+
+  return {
+    title: product.name,
+    description: product.description ?? `${product.name} — an Esuworx art toy sculpture.`,
+    openGraph: product.images?.[0] ? { images: [{ url: product.images[0] }] } : undefined,
+  };
+}
 
 export default async function ShopDetailPage({
   params,

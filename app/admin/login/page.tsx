@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Logo from "@/components/Logo";
 import LoginForm from "@/components/LoginForm";
+
+export const metadata: Metadata = {
+  title: "Admin Login | Esuworx",
+  robots: { index: false, follow: false },
+};
 
 export default function AdminLoginPage() {
   return (
