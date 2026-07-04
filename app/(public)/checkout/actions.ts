@@ -122,12 +122,16 @@ export async function submitOrder(
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    if (process.env.ADMIN_EMAIL) {
+    const adminEmails = process.env.ADMIN_EMAIL?.split(",")
+      .map((email) => email.trim())
+      .filter(Boolean);
+
+    if (adminEmails && adminEmails.length > 0) {
       try {
         const lines = emailItems.map((item) => `${item.quantity} x "${item.name}"`);
         await resend.emails.send({
           from: "ESUWORX Orders <onboarding@resend.dev>",
-          to: process.env.ADMIN_EMAIL,
+          to: adminEmails,
           subject: `New order from ${buyerName}`,
           text: [
             `${buyerName} (${buyerEmail}, ${buyerPhone}) ordered:`,
