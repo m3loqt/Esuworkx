@@ -1,23 +1,23 @@
 const faqs = [
   {
-    q: "How do time limited releases work?",
-    a: "Edition drops are pre announced via our private list and open for a strict 24 hour window. The final edition size is determined entirely by the number of units secured during this period. Everyone who places an order on sale day gets a piece. Once the window closes, the mold is retired. We never reissue archived resin casts.",
+    q: "How do releases work?",
+    a: "Each collection is announced in advance and made available for purchase during its release period. Most works are produced in limited editions or as made-to-order pieces, with edition sizes announced alongside each release. Once an edition is complete, it becomes part of the archive and is not reproduced.",
   },
   {
-    q: "When will my figure arrive?",
-    a: "Because our time limited sculptures are hand poured and finished to order after the window closes, please allow a lead time of 6 to 8 weeks for production. Standard studio inventory ships within 5 to 7 business days. Tracking details are sent via email once your piece ships.",
+    q: "When will my order arrive?",
+    a: "Production timelines vary depending on the collection. Made-to-order and pre-order pieces typically require 2–8 weeks to complete before shipping, while in-stock works are usually dispatched within 3–7 business days. You'll receive a shipping confirmation and tracking details via email once your order is on its way.",
   },
   {
     q: "How is shipping handled?",
-    a: "Rates are calculated at checkout based on your destination. We use premium, high quality materials to ensure your art toys arrive flawlessly. A minimal surcharge is applied to cover these specialized packing components.",
+    a: "Orders are shipped worldwide, with shipping costs calculated based on the destination. Delivery charges are shouldered by the collector. Each sculpture is securely packaged using premium protective materials, and tracking information is provided once your order has been dispatched.",
   },
   {
     q: "What if my piece arrives damaged?",
-    a: "Contact us immediately. Retain all original packaging for transit investigations. Email the studio with high resolution photos of the damage, and we will coordinate a solution.",
+    a: "If your piece arrives damaged, please contact us within 48 hours of delivery. Include clear photos of the artwork, its packaging, and the shipping box. We'll review the situation and work with you to find the best possible solution.",
   },
   {
     q: "Do you accept returns?",
-    a: "Due to the custom, made to order nature of our sculpts, we cannot accept returns on any pieces purchased during a time limited sale.",
+    a: "As each piece is produced in limited quantities or made to order, we do not accept returns or exchanges. If there is an issue with your order upon arrival, please contact us as soon as possible so we can assist you.",
   },
 ];
 

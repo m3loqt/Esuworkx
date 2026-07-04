@@ -52,6 +52,7 @@ export const works = pgTable("works", {
   slug: text("slug").notNull().unique(),
   description: text("description"),
   images: text("images").array(),
+  status: text("status").notNull().default("available"), // available (request to purchase) | sold
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

@@ -1,5 +1,6 @@
 import { desc, eq, inArray } from "drizzle-orm";
 import Link from "next/link";
+import AdminImageThumb from "@/components/AdminImageThumb";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import { formatPrice } from "@/lib/product";
@@ -87,10 +88,7 @@ export default async function AdminOrdersPage({
               return (
                 <tr key={order.id}>
                   <td>
-                    <a href={order.proofOfPaymentUrl} target="_blank" rel="noreferrer">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img className="admin_thumb" src={order.proofOfPaymentUrl} alt="Proof of payment" />
-                    </a>
+                    <AdminImageThumb src={order.proofOfPaymentUrl} alt="Proof of payment" />
                   </td>
                   <td style={{ minWidth: 200 }}>
                     {lineItems.map(({ item, product }) => (

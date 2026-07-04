@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdminImageThumb from "@/components/AdminImageThumb";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { formatPrice } from "@/lib/product";
@@ -44,8 +45,7 @@ export default async function AdminProductsPage({
               <tr key={product.id}>
                 <td>
                   {product.images?.[0] ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="admin_thumb" src={product.images[0]} alt="" />
+                    <AdminImageThumb src={product.images[0]} alt={product.name} />
                   ) : (
                     <div className="admin_thumb" />
                   )}

@@ -36,10 +36,22 @@ async function uniqueSlug(base: string, excludeId?: number): Promise<string> {
   }
 }
 
+function parseImageList(raw: FormDataEntryValue | null): string[] {
+  if (typeof raw !== "string") return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((s): s is string => typeof s === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
 function readWorkFields(formData: FormData) {
   return {
     title: String(formData.get("title") ?? "").trim(),
     description: String(formData.get("description") ?? "").trim(),
+    status: String(formData.get("status") ?? "available"),
+    keepImages: parseImageList(formData.get("keepImages")),
     imageFiles: formData
       .getAll("images")
       .filter((f): f is File => f instanceof File && f.size > 0),
@@ -55,7 +67,7 @@ export async function createWork(
   _prevState: WorkFormState,
   formData: FormData,
 ): Promise<WorkFormState> {
-  const { title, description, imageFiles } = readWorkFields(formData);
+  const { title, description, status, imageFiles } = readWorkFields(formData);
 
   if (!title) {
     return { status: "error", message: "Title is required." };
@@ -69,6 +81,7 @@ export async function createWork(
     slug,
     description: description || null,
     images,
+    status,
   });
 
   revalidateStorefront();
@@ -80,7 +93,7 @@ export async function updateWork(
   _prevState: WorkFormState,
   formData: FormData,
 ): Promise<WorkFormState> {
-  const { title, description, imageFiles } = readWorkFields(formData);
+  const { title, description, status, keepImages, imageFiles } = readWorkFields(formData);
 
   if (!title) {
     return { status: "error", message: "Title is required." };
@@ -91,11 +104,12 @@ export async function updateWork(
     return { status: "error", message: "Work not found." };
   }
 
-  const images = imageFiles.length > 0 ? await uploadImages(imageFiles) : existing.images;
+  const uploaded = await uploadImages(imageFiles);
+  const images = [...keepImages, ...uploaded];
 
   await db
     .update(works)
-    .set({ title, description: description || null, images })
+    .set({ title, description: description || null, images, status })
     .where(eq(works.id, id));
 
   revalidateStorefront();

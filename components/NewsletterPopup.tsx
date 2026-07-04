@@ -3,7 +3,6 @@
 import { useActionState, useEffect, useState } from "react";
 import { subscribeToNewsletter, type NewsletterState } from "@/lib/newsletter-actions";
 
-const STORAGE_KEY = "esuworks_newsletter_seen";
 const initialState: NewsletterState = { status: "idle" };
 
 export default function NewsletterPopup() {
@@ -11,19 +10,7 @@ export default function NewsletterPopup() {
   const [state, formAction, isPending] = useActionState(subscribeToNewsletter, initialState);
 
   useEffect(() => {
-    try {
-      if (window.localStorage.getItem(STORAGE_KEY)) return;
-    } catch {
-      return;
-    }
-    const timer = setTimeout(() => {
-      setVisible(true);
-      try {
-        window.localStorage.setItem(STORAGE_KEY, "1");
-      } catch {
-        // ignore
-      }
-    }, 1200);
+    const timer = setTimeout(() => setVisible(true), 1200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -50,7 +37,7 @@ export default function NewsletterPopup() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="newsletter_image"
-          src="/ui/newsletter.png"
+          src="/ui/newsletternew.svg"
           alt="ESUWORX mascots celebrating with a sealed letter"
         />
 
@@ -63,16 +50,16 @@ export default function NewsletterPopup() {
           </>
         ) : (
           <>
-            <h2 className="newsletter_title">Special Delivery</h2>
+            <h2 className="newsletter_title">The Studio List</h2>
             <p className="newsletter_text">
-              Join the list for first dibs on new drops, secret restocks, and the
-              occasional weird idea from the studio
+              Be the first to discover new collections, exhibition announcements,
+              behind-the-scenes process, and occasional notes from the studio.
             </p>
             <form action={formAction} className="newsletter_form">
               <input
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder="Your email address"
                 required
                 className="checkout_input"
               />
@@ -83,7 +70,7 @@ export default function NewsletterPopup() {
                 style={{ maxWidth: "none" }}
                 disabled={isPending}
               >
-                {isPending ? "JOINING..." : "COUNT ME IN"}
+                {isPending ? "JOINING..." : "JOIN THE LIST"}
               </button>
             </form>
           </>

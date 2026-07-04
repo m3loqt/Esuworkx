@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { Product } from "@/db/schema";
 import type { ProductFormState } from "@/app/admin/(protected)/products/actions";
 import FileDropzone from "./FileDropzone";
@@ -16,9 +16,21 @@ export default function ProductForm({
   product?: Product;
 }) {
   const [state, formAction, isPending] = useActionState(action, initialState);
+  const [keptImages, setKeptImages] = useState<string[]>(product?.images ?? []);
+
+  function removeImage(img: string) {
+    setKeptImages((prev) => prev.filter((i) => i !== img));
+  }
+
+  function preventEnterSubmit(e: React.KeyboardEvent<HTMLFormElement>) {
+    const target = e.target as HTMLElement;
+    if (e.key === "Enter" && target.tagName === "INPUT") {
+      e.preventDefault();
+    }
+  }
 
   return (
-    <form action={formAction} className="admin_form">
+    <form action={formAction} className="admin_form" onKeyDown={preventEnterSubmit}>
       <label className="admin_field_label" htmlFor="name">Product Name</label>
       <input id="name" type="text" name="name" defaultValue={product?.name} required />
 
@@ -57,14 +69,25 @@ export default function ProductForm({
       <SpecificationsEditor initial={product?.specifications ?? []} />
 
       <label className="admin_field_label" htmlFor="images">
-        Images {product ? "(leave empty to keep current)" : ""}
+        Images {product ? "(new uploads are added to the images below)" : ""}
       </label>
       <FileDropzone name="images" accept="image/*" multiple />
-      {product?.images && product.images.length > 0 && (
-        <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
-          {product.images.map((img) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={img} src={img} alt="" className="admin_thumb" style={{ width: 60, height: 60 }} />
+      <input type="hidden" name="keepImages" value={JSON.stringify(keptImages)} />
+      {keptImages.length > 0 && (
+        <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+          {keptImages.map((img) => (
+            <div key={img} className="admin_thumb_removable">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={img} alt="" className="admin_thumb" style={{ width: 60, height: 60 }} />
+              <button
+                type="button"
+                className="admin_thumb_remove"
+                onClick={() => removeImage(img)}
+                aria-label="Remove image"
+              >
+                ✕
+              </button>
+            </div>
           ))}
         </div>
       )}

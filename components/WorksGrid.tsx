@@ -42,6 +42,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               ) : (
                 "NO IMAGE"
               )}
+              {work.status === "sold" && <span className="work_sold_badge">SOLD</span>}
             </div>
             <h2>{work.title}</h2>
             <p className="view_meta">VIEW DETAILS</p>
@@ -108,20 +109,41 @@ export default function WorksGrid({ works }: { works: Work[] }) {
                 {previewWork.description}
               </p>
               <div style={{ borderTop: "1px solid var(--border)", paddingTop: 30 }}>
-                <p
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    marginBottom: 20,
-                    letterSpacing: 1,
-                    color: "var(--muted)",
-                  }}
-                >
-                  SPECIFICATIONS AVAILABLE ON REQUEST
-                </p>
-                <button className="btn_main" onClick={() => openInquiry(previewWork)}>
-                  REQUEST TO PURCHASE
-                </button>
+                {previewWork.status === "sold" ? (
+                  <>
+                    <p
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        marginBottom: 20,
+                        letterSpacing: 1,
+                        color: "var(--muted)",
+                      }}
+                    >
+                      THIS PIECE HAS BEEN SOLD
+                    </p>
+                    <button className="btn_main" disabled style={{ opacity: 0.4, cursor: "not-allowed" }}>
+                      SOLD
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        marginBottom: 20,
+                        letterSpacing: 1,
+                        color: "var(--muted)",
+                      }}
+                    >
+                      SPECIFICATIONS AVAILABLE ON REQUEST
+                    </p>
+                    <button className="btn_main" onClick={() => openInquiry(previewWork)}>
+                      REQUEST TO PURCHASE
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

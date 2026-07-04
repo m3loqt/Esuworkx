@@ -55,6 +55,16 @@ function parseSpecifications(raw: string): ProductSpecification[] {
     .filter((s) => s.label || s.detail);
 }
 
+function parseImageList(raw: FormDataEntryValue | null): string[] {
+  if (typeof raw !== "string") return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((s): s is string => typeof s === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
 function readProductFields(formData: FormData) {
   return {
     name: String(formData.get("name") ?? "").trim(),
@@ -63,6 +73,7 @@ function readProductFields(formData: FormData) {
     status: String(formData.get("status") ?? "available"),
     stockCount: Number(formData.get("stockCount") ?? 1),
     specifications: parseSpecifications(String(formData.get("specifications") ?? "")),
+    keepImages: parseImageList(formData.get("keepImages")),
     imageFiles: formData
       .getAll("images")
       .filter((f): f is File => f instanceof File && f.size > 0),
@@ -110,7 +121,7 @@ export async function updateProduct(
   _prevState: ProductFormState,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const { name, description, price, status, stockCount, specifications, imageFiles } =
+  const { name, description, price, status, stockCount, specifications, keepImages, imageFiles } =
     readProductFields(formData);
 
   if (!name) {
@@ -122,7 +133,8 @@ export async function updateProduct(
     return { status: "error", message: "Product not found." };
   }
 
-  const images = imageFiles.length > 0 ? await uploadImages(imageFiles) : existing.images;
+  const uploaded = await uploadImages(imageFiles);
+  const images = [...keepImages, ...uploaded];
 
   await db
     .update(products)

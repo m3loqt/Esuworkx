@@ -31,7 +31,7 @@ export default function Nav() {
   return (
     <nav>
       <Link href="/" className="logo_container">
-        <Logo />
+        <Logo size={40} />
       </Link>
       <div className="nav_links">
         {links.map((link) => (

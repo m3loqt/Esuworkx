@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdminImageThumb from "@/components/AdminImageThumb";
 import { db } from "@/db";
 import { works } from "@/db/schema";
 import { deleteWork } from "./actions";
@@ -24,6 +25,7 @@ export default async function AdminWorksPage() {
               <th></th>
               <th>Title</th>
               <th>Description</th>
+              <th>Status</th>
               <th></th>
             </tr>
           </thead>
@@ -32,8 +34,7 @@ export default async function AdminWorksPage() {
               <tr key={work.id}>
                 <td>
                   {work.images?.[0] ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="admin_thumb" src={work.images[0]} alt="" />
+                    <AdminImageThumb src={work.images[0]} alt={work.title} />
                   ) : (
                     <div className="admin_thumb" />
                   )}
@@ -41,6 +42,11 @@ export default async function AdminWorksPage() {
                 <td style={{ fontWeight: 700 }}>{work.title}</td>
                 <td style={{ color: "var(--muted)", fontSize: 12, maxWidth: 320 }}>
                   {work.description}
+                </td>
+                <td>
+                  <span className={`admin_badge${work.status === "sold" ? " admin_badge_rejected" : " admin_badge_confirmed"}`}>
+                    {work.status === "sold" ? "Sold" : "Request to Purchase"}
+                  </span>
                 </td>
                 <td>
                   <div className="admin_table_actions">

@@ -14,6 +14,7 @@ export const mockWorks: Work[] = [
       "/photos/tree/BB402255.jpg",
       "/photos/tree/BB402272.jpg",
     ],
+    status: "available",
     createdAt: new Date("2026-01-01"),
   },
   {
@@ -27,6 +28,7 @@ export const mockWorks: Work[] = [
       "/photos/leaf/BB402326.jpg",
       "/photos/leaf/BB402327.jpg",
     ],
+    status: "sold",
     createdAt: new Date("2026-01-01"),
   },
 ];

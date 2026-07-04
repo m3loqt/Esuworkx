@@ -180,8 +180,10 @@ export default function CheckoutForm() {
                   key={method.key}
                   className={`qr_option${method.key === activeMethod.key ? " active" : ""}`}
                   onClick={() => setActiveMethod(method)}
+                  aria-label={method.label}
                 >
-                  {method.label}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="qr_option_logo" src={method.logo} alt={method.label} />
                 </button>
               ))}
             </div>

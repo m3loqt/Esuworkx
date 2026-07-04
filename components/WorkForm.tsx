@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { Work } from "@/db/schema";
 import type { WorkFormState } from "@/app/admin/(protected)/works/actions";
 import FileDropzone from "./FileDropzone";
@@ -15,24 +15,53 @@ export default function WorkForm({
   work?: Work;
 }) {
   const [state, formAction, isPending] = useActionState(action, initialState);
+  const [keptImages, setKeptImages] = useState<string[]>(work?.images ?? []);
+
+  function removeImage(img: string) {
+    setKeptImages((prev) => prev.filter((i) => i !== img));
+  }
+
+  function preventEnterSubmit(e: React.KeyboardEvent<HTMLFormElement>) {
+    const target = e.target as HTMLElement;
+    if (e.key === "Enter" && target.tagName === "INPUT") {
+      e.preventDefault();
+    }
+  }
 
   return (
-    <form action={formAction} className="admin_form">
+    <form action={formAction} className="admin_form" onKeyDown={preventEnterSubmit}>
       <label className="admin_field_label" htmlFor="title">Title</label>
       <input id="title" type="text" name="title" defaultValue={work?.title} required />
 
       <label className="admin_field_label" htmlFor="description">Description</label>
       <textarea id="description" name="description" rows={4} defaultValue={work?.description ?? ""} />
 
+      <label className="admin_field_label" htmlFor="status">Status</label>
+      <select id="status" name="status" defaultValue={work?.status ?? "available"}>
+        <option value="available">Available (Request to Purchase)</option>
+        <option value="sold">Sold</option>
+      </select>
+
       <label className="admin_field_label" htmlFor="images">
-        Images {work ? "(leave empty to keep current)" : ""}
+        Images {work ? "(new uploads are added to the images below)" : ""}
       </label>
       <FileDropzone name="images" accept="image/*" multiple />
-      {work?.images && work.images.length > 0 && (
-        <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
-          {work.images.map((img) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={img} src={img} alt="" className="admin_thumb" style={{ width: 60, height: 60 }} />
+      <input type="hidden" name="keepImages" value={JSON.stringify(keptImages)} />
+      {keptImages.length > 0 && (
+        <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+          {keptImages.map((img) => (
+            <div key={img} className="admin_thumb_removable">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={img} alt="" className="admin_thumb" style={{ width: 60, height: 60 }} />
+              <button
+                type="button"
+                className="admin_thumb_remove"
+                onClick={() => removeImage(img)}
+                aria-label="Remove image"
+              >
+                ✕
+              </button>
+            </div>
           ))}
         </div>
       )}

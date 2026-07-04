@@ -16,24 +16,26 @@ export default function AboutPage() {
 
         <div style={{ textAlign: "left", color: "var(--muted)", fontSize: 16, lineHeight: 1.8 }}>
           <p style={{ marginBottom: 20 }}>
-            ESUWORX is an independent art toy label founded by Ace de Leon, based in
-            Manila and specializing in industrial grade resin sculptures. Every piece
-            starts on the workbench — sculpted, cast, and hand painted in small
-            batches rather than mass produced, which is why runs are limited and
-            some pieces are made strictly to order.
+            ESUWORX is an independent art toy practice by Ace De Leon, a
+            Philippine-based artist exploring childhood memories, quiet
+            emotions, and the beauty of everyday moments through sculpture.
           </p>
           <p style={{ marginBottom: 20 }}>
-            The studio&apos;s work sits somewhere between collectible art toy and
-            industrial object: charcoal and matte resin finishes, heavy-set forms,
-            and a focus on physical presence over disposable novelty. Limited
-            releases open for a fixed window, and once a run closes, that mold is
-            retired for good — no reissues, no reprints.
+            Inspired by nature, his dogs, and the small experiences we often
+            overlook, each piece reflects themes of companionship, growth,
+            curiosity, and finding comfort in uncertainty. Every sculpture is
+            thoughtfully developed and meticulously hand-finished in small
+            batches, making each release intentionally limited.
+          </p>
+          <p style={{ marginBottom: 20 }}>
+            Rather than creating mass-produced collectibles, ESUWORX creates
+            story-driven objects meant to be lived with, collected, and
+            remembered. Each release is produced in limited quantities, while
+            select works are offered as made-to-order or one-of-one pieces.
           </p>
           <p>
-            Outside of scheduled drops, the studio keeps a small standing shop of
-            in-stock pieces, and takes on inquiry-based commissions for larger or
-            bespoke work. You can follow new drops and behind-the-scenes process on
-            Instagram at{" "}
+            New collections, process updates, and behind-the-scenes work are
+            shared on Instagram at{" "}
             <a href="https://instagram.com/esuworx" target="_blank" rel="noreferrer">
               @esuworx
             </a>
