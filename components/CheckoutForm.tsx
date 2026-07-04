@@ -25,16 +25,17 @@ export default function CheckoutForm() {
 
   if (state.status === "success") {
     return (
-      <div className="form_container" style={{ margin: "60px auto" }}>
-        <p style={{ fontWeight: 900, fontSize: 20, textTransform: "uppercase", marginBottom: 15 }}>
-          Order received.
-        </p>
-        <p style={{ color: "var(--muted)" }}>
-          We&apos;ll verify and confirm your order shortly.
-        </p>
-        <Link href="/shop" className="btn_main" style={{ margin: "30px auto" }}>
-          BACK TO SHOP
-        </Link>
+      <div className="order_success_backdrop">
+        <div className="order_success_card">
+          <div className="order_success_icon">✓</div>
+          <p className="order_success_title">Order received.</p>
+          <p className="order_success_text">
+            We&apos;ll verify and confirm your order shortly.
+          </p>
+          <Link href="/shop" className="btn_main" style={{ margin: "10px auto 0" }}>
+            BACK TO SHOP
+          </Link>
+        </div>
       </div>
     );
   }
