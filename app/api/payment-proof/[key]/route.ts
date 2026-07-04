@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { paymentProofStore } from "@/lib/blobs";
 import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/session";
+import { safeImageContentType } from "@/lib/uploads";
 
 export async function GET(
   _request: Request,
@@ -21,10 +22,9 @@ export async function GET(
     return new Response("Not found", { status: 404 });
   }
 
-  const contentType =
-    (result.metadata?.contentType as string) || "application/octet-stream";
+  const contentType = safeImageContentType(result.metadata?.contentType);
 
   return new Response(result.data, {
-    headers: { "Content-Type": contentType },
+    headers: { "Content-Type": contentType, "X-Content-Type-Options": "nosniff" },
   });
 }

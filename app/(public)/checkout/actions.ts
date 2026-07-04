@@ -6,6 +6,7 @@ import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import { paymentProofStore } from "@/lib/blobs";
 import { orderPendingEmail } from "@/lib/order-email";
+import { isAllowedImageFile, sanitizeFileName } from "@/lib/uploads";
 
 export type CheckoutState = {
   status: "idle" | "error" | "success";
@@ -55,6 +56,13 @@ export async function submitOrder(
     };
   }
 
+  if (!isAllowedImageFile(proofFile)) {
+    return {
+      status: "error",
+      message: "Payment proof must be an image file (JPG, PNG, WEBP, GIF, or HEIC).",
+    };
+  }
+
   const foundProducts = await db
     .select()
     .from(products)
@@ -77,7 +85,7 @@ export async function submitOrder(
     return { status: "error", message: errors.join(" ") };
   }
 
-  const key = `order-${Date.now()}-${proofFile.name}`;
+  const key = `order-${Date.now()}-${sanitizeFileName(proofFile.name)}`;
   await paymentProofStore().set(key, await proofFile.arrayBuffer(), {
     metadata: { contentType: proofFile.type || "application/octet-stream" },
   });

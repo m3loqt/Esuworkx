@@ -7,15 +7,17 @@ import { db } from "@/db";
 import { products, type ProductSpecification } from "@/db/schema";
 import { productImageStore } from "@/lib/blobs";
 import { slugify } from "@/lib/product";
+import { isAllowedImageFile, sanitizeFileName } from "@/lib/uploads";
 
 export type ProductFormState = { status: "idle" | "error"; message?: string };
 
 async function uploadImages(files: File[]): Promise<string[]> {
   const urls: string[] = [];
   for (const file of files) {
-    const key = `${Date.now()}-${file.name}`;
+    if (!isAllowedImageFile(file)) continue;
+    const key = `${Date.now()}-${sanitizeFileName(file.name)}`;
     await productImageStore().set(key, await file.arrayBuffer(), {
-      metadata: { contentType: file.type || "application/octet-stream" },
+      metadata: { contentType: file.type },
     });
     urls.push(`/api/product-image/${encodeURIComponent(key)}`);
   }
