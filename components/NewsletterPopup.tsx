@@ -50,7 +50,7 @@ export default function NewsletterPopup() {
           </>
         ) : (
           <>
-            <h2 className="newsletter_title">The Studio List</h2>
+            <h2 className="newsletter_title">For Collectors</h2>
             <p className="newsletter_text">
               Be the first to discover new collections, exhibition announcements,
               behind-the-scenes process, and occasional notes from the studio.

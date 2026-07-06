@@ -47,7 +47,7 @@ export default function Footer() {
           <InstagramIcon />
           Instagram
         </a>
-        <a href="mailto:studio@esuworx.com">
+        <a href="mailto:collect@esuworx.shop">
           <EmailIcon />
           Email
         </a>
