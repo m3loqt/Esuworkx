@@ -45,7 +45,7 @@ export default function NewsletterPopup() {
           <>
             <h2 className="newsletter_title">You&apos;re In!</h2>
             <p className="newsletter_text">
-              Welcome to the studio family — keep an eye on your inbox.
+              Welcome to the studio family! Keep an eye on your inbox
             </p>
           </>
         ) : (
