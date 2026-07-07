@@ -38,7 +38,7 @@ export async function subscribeToNewsletter(
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: "ESUWORX Newsletter <onboarding@resend.dev>",
+          from: "ESUWORX Newsletter <noreply@esuworx.shop>",
           to: adminEmails,
           subject: "New newsletter subscriber",
           text: `${email} just subscribed to the newsletter.`,

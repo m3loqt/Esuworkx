@@ -130,7 +130,7 @@ export async function submitOrder(
       try {
         const lines = emailItems.map((item) => `${item.quantity} x "${item.name}"`);
         await resend.emails.send({
-          from: "ESUWORX Orders <onboarding@resend.dev>",
+          from: "ESUWORX Orders <noreply@esuworx.shop>",
           to: adminEmails,
           subject: `New order from ${buyerName}`,
           text: [
@@ -156,7 +156,7 @@ export async function submitOrder(
         items: emailItems,
       });
       await resend.emails.send({
-        from: "ESUWORX <onboarding@resend.dev>",
+        from: "ESUWORX <noreply@esuworx.shop>",
         to: buyerEmail,
         subject: buyerMail.subject,
         html: buyerMail.html,

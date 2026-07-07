@@ -55,7 +55,7 @@ export async function confirmOrder(orderId: number, _formData: FormData): Promis
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: "ESUWORX <onboarding@resend.dev>",
+      from: "ESUWORX <noreply@esuworx.shop>",
       to: confirmedOrder.buyerEmail,
       subject: mail.subject,
       html: mail.html,
