@@ -13,6 +13,26 @@ const links = [
   { href: "/about", label: "About" },
 ];
 
+function CartIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 1.95-1.56L23 6H6" />
+    </svg>
+  );
+}
+
 export default function Nav() {
   const pathname = usePathname();
   const { itemCount, openCart } = useCart();
@@ -44,6 +64,7 @@ export default function Nav() {
           </Link>
         ))}
         <button type="button" className="cart_trigger" onClick={openCart} aria-label="Open cart">
+          <CartIcon />
           Cart
           {itemCount > 0 && (
             <span className={`cart_badge${bump ? " cart_badge_bump" : ""}`}>{itemCount}</span>

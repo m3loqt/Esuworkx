@@ -92,6 +92,7 @@ nav {
   letter-spacing: inherit;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
 }
 .cart_trigger:hover {
   opacity: 1;
