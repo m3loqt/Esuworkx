@@ -54,6 +54,7 @@ export const mockProducts: Product[] = [
     ],
     status: "limited",
     stockCount: 4,
+    archived: false,
     createdAt: new Date("2026-01-02"),
   },
   {
@@ -75,6 +76,7 @@ export const mockProducts: Product[] = [
     ],
     status: "available",
     stockCount: 10,
+    archived: false,
     createdAt: new Date("2026-01-03"),
   },
   {
@@ -91,6 +93,7 @@ export const mockProducts: Product[] = [
     ],
     status: "sold_out",
     stockCount: 0,
+    archived: false,
     createdAt: new Date("2026-01-04"),
   },
 ];

@@ -1,11 +1,12 @@
 "use server";
 
+import { logEmailResult } from "@/lib/email-log";
 import { inArray } from "drizzle-orm";
 import { Resend } from "resend";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import { paymentProofStore } from "@/lib/blobs";
-import { orderPendingEmail } from "@/lib/order-email";
+import { CONTACT_EMAIL, orderPendingEmail } from "@/lib/order-email";
 import { isAllowedImageFile, sanitizeFileName } from "@/lib/uploads";
 
 export type CheckoutState = {
@@ -72,7 +73,7 @@ export async function submitOrder(
   const errors: string[] = [];
   for (const item of requestedItems) {
     const product = productById.get(item.productId);
-    if (!product || product.status === "sold_out") {
+    if (!product || product.archived || product.status === "sold_out") {
       errors.push(`${product?.name ?? "An item in your cart"} is no longer available.`);
       continue;
     }
@@ -129,7 +130,7 @@ export async function submitOrder(
     if (adminEmails && adminEmails.length > 0) {
       try {
         const lines = emailItems.map((item) => `${item.quantity} x "${item.name}"`);
-        await resend.emails.send({
+        logEmailResult("admin new-order notification", await resend.emails.send({
           from: "ESUWORX Orders <noreply@esuworx.shop>",
           to: adminEmails,
           subject: `New order from ${buyerName}`,
@@ -142,7 +143,7 @@ export async function submitOrder(
             "",
             "Review and confirm this order in the admin panel.",
           ].join("\n"),
-        });
+        }));
       } catch (err) {
         console.error("Failed to send admin order notification email:", err);
       }
@@ -155,13 +156,14 @@ export async function submitOrder(
         buyerAddress,
         items: emailItems,
       });
-      await resend.emails.send({
+      logEmailResult("buyer order-received email", await resend.emails.send({
         from: "ESUWORX <noreply@esuworx.shop>",
         to: buyerEmail,
+        replyTo: CONTACT_EMAIL,
         subject: buyerMail.subject,
         html: buyerMail.html,
         text: buyerMail.text,
-      });
+      }));
     } catch (err) {
       console.error("Failed to send buyer order-received email:", err);
     }

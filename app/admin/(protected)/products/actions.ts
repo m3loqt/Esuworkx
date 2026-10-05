@@ -146,20 +146,30 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: number, _formData: FormData): Promise<void> {
-  let failed = false;
+  let hasOrders = false;
   try {
     await db.delete(products).where(eq(products.id, id));
   } catch {
-    failed = true;
+    hasOrders = true;
   }
 
-  if (failed) {
+  if (hasOrders) {
+    // Orders still reference this product, so keep the row (order history
+    // depends on it) and just take it off the shop.
+    await db.update(products).set({ archived: true }).where(eq(products.id, id));
+    revalidateStorefront();
     redirect(
-      "/admin/products?error=" +
-        encodeURIComponent("Can't delete a product that has existing orders."),
+      "/admin/products?notice=" +
+        encodeURIComponent("This product has orders, so it was archived instead of deleted. It's hidden from the shop."),
     );
   }
 
   revalidateStorefront();
   redirect("/admin/products");
+}
+
+export async function restoreProduct(id: number, _formData: FormData): Promise<void> {
+  await db.update(products).set({ archived: false }).where(eq(products.id, id));
+  revalidateStorefront();
+  redirect("/admin/products?view=archived");
 }

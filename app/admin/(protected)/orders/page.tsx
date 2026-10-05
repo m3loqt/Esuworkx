@@ -4,15 +4,16 @@ import AdminImageThumb from "@/components/AdminImageThumb";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import { formatPrice } from "@/lib/product";
-import { confirmOrder, rejectOrder } from "./actions";
+import { completeOrder, confirmOrder, rejectOrder } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-const STATUSES = ["pending", "confirmed", "rejected"] as const;
+const STATUSES = ["pending", "confirmed", "completed", "rejected"] as const;
 
 function statusBadgeClass(status: string) {
   if (status === "pending") return "admin_badge admin_badge_pending";
   if (status === "confirmed") return "admin_badge admin_badge_confirmed";
+  if (status === "completed") return "admin_badge admin_badge_completed";
   if (status === "rejected") return "admin_badge admin_badge_rejected";
   return "admin_badge";
 }
@@ -113,6 +114,15 @@ export default async function AdminOrdersPage({
                     <span className={statusBadgeClass(order.status)}>{order.status}</span>
                   </td>
                   <td>
+                    {order.status === "confirmed" && (
+                      <div className="admin_table_actions">
+                        <form action={completeOrder.bind(null, order.id)}>
+                          <button type="submit" className="admin_btn admin_btn_sm admin_btn_primary">
+                            Complete Order
+                          </button>
+                        </form>
+                      </div>
+                    )}
                     {order.status === "pending" && (
                       <div className="admin_table_actions">
                         <form action={confirmOrder.bind(null, order.id)}>

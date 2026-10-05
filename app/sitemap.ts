@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 
@@ -7,7 +8,8 @@ const siteUrl = "https://esuworx.shop";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allProducts = await db
     .select({ slug: products.slug, createdAt: products.createdAt })
-    .from(products);
+    .from(products)
+    .where(eq(products.archived, false));
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: siteUrl, changeFrequency: "weekly", priority: 1 },

@@ -1191,6 +1191,10 @@ footer {
   background: #dcf5e0;
   color: #216534;
 }
+.admin_badge_completed {
+  background: #e3ebff;
+  color: #1f3a8a;
+}
 .admin_badge_rejected {
   background: #fde2e2;
   color: #a01c1c;

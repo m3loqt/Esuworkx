@@ -1,5 +1,6 @@
 "use server";
 
+import { logEmailResult } from "@/lib/email-log";
 import { Resend } from "resend";
 import { db } from "@/db";
 import { newsletterSubscribers } from "@/db/schema";
@@ -37,12 +38,12 @@ export async function subscribeToNewsletter(
     if (adminEmails && adminEmails.length > 0) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
-        await resend.emails.send({
+        logEmailResult("newsletter subscriber notification email", await resend.emails.send({
           from: "ESUWORX Newsletter <noreply@esuworx.shop>",
           to: adminEmails,
           subject: "New newsletter subscriber",
           text: `${email} just subscribed to the newsletter.`,
-        });
+        }));
       } catch (err) {
         console.error("Failed to send newsletter subscriber notification email:", err);
       }

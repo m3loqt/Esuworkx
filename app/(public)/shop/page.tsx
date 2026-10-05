@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { formatPrice, statusLabel, statusColor } from "@/lib/product";
@@ -13,7 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  const shopProducts = await db.select().from(products);
+  const shopProducts = await db
+    .select()
+    .from(products)
+    .where(eq(products.archived, false))
+    .orderBy(desc(products.createdAt));
 
   return (
     <div className="tab">

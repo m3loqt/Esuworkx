@@ -6,6 +6,7 @@ import {
   integer,
   timestamp,
   jsonb,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export type ProductSpecification = { label: string; detail: string };
@@ -20,6 +21,8 @@ export const products = pgTable("products", {
   specifications: jsonb("specifications").$type<ProductSpecification[]>(),
   status: text("status").notNull().default("available"), // available | limited | sold_out
   stockCount: integer("stock_count").notNull().default(1),
+  // Hidden from the shop but kept so past orders still reference it.
+  archived: boolean("archived").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -30,7 +33,7 @@ export const orders = pgTable("orders", {
   buyerPhone: text("buyer_phone").notNull(),
   buyerAddress: text("buyer_address").notNull(),
   proofOfPaymentUrl: text("proof_of_payment_url").notNull(),
-  status: text("status").notNull().default("pending"), // pending | confirmed | rejected
+  status: text("status").notNull().default("pending"), // pending | confirmed | completed | rejected
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 

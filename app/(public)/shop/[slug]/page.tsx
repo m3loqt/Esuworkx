@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import ShopGallery from "@/components/ShopGallery";
 import PurchaseControls from "@/components/PurchaseControls";
@@ -15,7 +15,10 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const [product] = await db.select().from(products).where(eq(products.slug, slug));
+  const [product] = await db
+    .select()
+    .from(products)
+    .where(and(eq(products.slug, slug), eq(products.archived, false)));
 
   if (!product) return { title: "Product Not Found" };
 
@@ -32,7 +35,10 @@ export default async function ShopDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [product] = await db.select().from(products).where(eq(products.slug, slug));
+  const [product] = await db
+    .select()
+    .from(products)
+    .where(and(eq(products.slug, slug), eq(products.archived, false)));
 
   if (!product) notFound();
 
